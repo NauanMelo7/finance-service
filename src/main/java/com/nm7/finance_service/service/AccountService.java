@@ -3,8 +3,10 @@ package com.nm7.finance_service.service;
 import com.nm7.finance_service.domain.account.Account;
 import com.nm7.finance_service.dto.account.AccountCreateDTO;
 import com.nm7.finance_service.dto.account.AccountResponseDTO;
+import com.nm7.finance_service.exception.BusinessException;
 import com.nm7.finance_service.repository.account.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +15,11 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     public AccountResponseDTO createAccount(AccountCreateDTO data){
+
+        if(accountRepository.existsByName(data.name())) {
+            throw new BusinessException("Account already exists", HttpStatus.CONFLICT);
+        }
+
         Account newAccount = new Account(
                 data.name(),
                 data.initialBalance()
@@ -20,10 +27,13 @@ public class AccountService {
 
         Account savedAccount = accountRepository.save(newAccount);
 
+
         return new AccountResponseDTO(
                 savedAccount.getName(),
                 savedAccount.getInitialBalance(),
-                savedAccount.isActive()
+                savedAccount.isActive(),
+                savedAccount.getCreatedAt(),
+                savedAccount.getUpdatedAt()
         );
 
     }

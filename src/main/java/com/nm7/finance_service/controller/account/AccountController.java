@@ -5,12 +5,10 @@ import com.nm7.finance_service.dto.account.AccountResponseDTO;
 import com.nm7.finance_service.service.AccountService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -22,7 +20,8 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/account")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<AccountResponseDTO> createAccount(@RequestBody AccountCreateDTO data) {
 
         AccountResponseDTO accountCreated = accountService.createAccount(data);
