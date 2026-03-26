@@ -2,13 +2,14 @@ package com.nm7.finance_service.controller.account;
 
 import com.nm7.finance_service.dto.account.AccountCreateDTO;
 import com.nm7.finance_service.dto.account.AccountResponseDTO;
+import com.nm7.finance_service.dto.account.FindAccountResponse;
 import com.nm7.finance_service.service.AccountService;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -21,11 +22,24 @@ public class AccountController {
     }
 
     @PostMapping("/account")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<AccountResponseDTO> createAccount(@RequestBody AccountCreateDTO data) {
+    public ResponseEntity<AccountResponseDTO> createAccount(@Valid @RequestBody AccountCreateDTO data) {
 
         AccountResponseDTO accountCreated = accountService.createAccount(data);
 
         return ResponseEntity.ok(accountCreated);
+    }
+
+    @GetMapping("/account/{id}")
+    public ResponseEntity<FindAccountResponse> findAccountById(@PathVariable UUID id){
+        FindAccountResponse findAccount = accountService.findAccount(id);
+
+        return ResponseEntity.ok(findAccount);
+    }
+
+    @PatchMapping("/account/{id}/inactivate")
+    public ResponseEntity<Void> inactivateAccount(@PathVariable UUID id){
+        accountService.inactivateAccount(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

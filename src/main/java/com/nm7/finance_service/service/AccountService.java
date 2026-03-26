@@ -3,11 +3,14 @@ package com.nm7.finance_service.service;
 import com.nm7.finance_service.domain.account.Account;
 import com.nm7.finance_service.dto.account.AccountCreateDTO;
 import com.nm7.finance_service.dto.account.AccountResponseDTO;
+import com.nm7.finance_service.dto.account.FindAccountResponse;
 import com.nm7.finance_service.exception.BusinessException;
 import com.nm7.finance_service.repository.account.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class AccountService {
@@ -29,6 +32,7 @@ public class AccountService {
 
 
         return new AccountResponseDTO(
+                savedAccount.getId(),
                 savedAccount.getName(),
                 savedAccount.getInitialBalance(),
                 savedAccount.isActive(),
@@ -36,5 +40,31 @@ public class AccountService {
                 savedAccount.getUpdatedAt()
         );
 
+    }
+
+    public FindAccountResponse findAccount(UUID id) {
+        Account findAccountById = accountRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Account is not found", HttpStatus.NOT_FOUND));
+
+        return new FindAccountResponse(
+                findAccountById.getId(),
+                findAccountById.getName(),
+                findAccountById.isActive(),
+                findAccountById.getCreatedAt(),
+                findAccountById.getUpdatedAt()
+        );
+    }
+
+    public void inactivateAccount(UUID id){
+        Account findAccount = accountRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Account is not found", HttpStatus.NOT_FOUND));
+
+        if(!findAccount.isActive()){
+            throw new BusinessException("This account is inactive", HttpStatus.CONFLICT);
+        }
+
+        findAccount.setActive(false);
+
+        accountRepository.save(findAccount);
     }
 }

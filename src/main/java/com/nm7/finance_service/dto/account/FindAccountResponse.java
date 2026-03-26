@@ -1,15 +1,13 @@
 package com.nm7.finance_service.dto.account;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record AccountResponseDTO(
+public record FindAccountResponse(
         UUID id,
         String name,
-        BigDecimal initialBalance,
         boolean active,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime updatedAd
 ) {
 }
