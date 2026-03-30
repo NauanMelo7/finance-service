@@ -1,14 +1,14 @@
-package com.nm7.finance_service.controller.account;
+package com.nm7.finance_service.controller;
 
 import com.nm7.finance_service.dto.account.AccountCreateDTO;
 import com.nm7.finance_service.dto.account.AccountResponseDTO;
 import com.nm7.finance_service.dto.account.FindAccountResponse;
 import com.nm7.finance_service.service.AccountService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -41,5 +41,14 @@ public class AccountController {
         accountService.inactivateAccount(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/account")
+    public ResponseEntity<List<FindAccountResponse>> getAllAccount() {
+        List<FindAccountResponse> getAllAccount = accountService.findAllAccounts();
+
+
+
+        return ResponseEntity.ok(getAllAccount);
     }
 }
