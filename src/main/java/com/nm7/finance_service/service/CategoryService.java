@@ -6,8 +6,10 @@ import com.nm7.finance_service.exception.BusinessException;
 import com.nm7.finance_service.repository.account.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CategoryService {
@@ -30,5 +32,21 @@ public class CategoryService {
 
         return createCategory;
 
+    }
+
+    public List<Category> findAllCategories(){
+
+       return categoryRepository.findAll();
+
+    }
+
+    public Category findCategoryById(UUID id) {
+
+        Category findCategory = this.categoryRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Category is not found", HttpStatus.NOT_FOUND));
+
+
+
+        return findCategory;
     }
 }
