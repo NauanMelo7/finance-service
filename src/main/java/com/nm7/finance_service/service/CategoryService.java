@@ -44,9 +44,20 @@ public class CategoryService {
 
         Category findCategory = this.categoryRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Category is not found", HttpStatus.NOT_FOUND));
-
-
-
         return findCategory;
+    }
+
+    public Category inactivateCategory(UUID id) {
+
+        Category findCategory = this.categoryRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Category is not found", HttpStatus.NOT_FOUND));
+
+        if(!findCategory.isActive()) {
+            throw new BusinessException("The Category is already inactive", HttpStatus.CONFLICT);
+        }
+
+        findCategory.setActive(false);
+
+        return this.categoryRepository.save(findCategory);
     }
 }

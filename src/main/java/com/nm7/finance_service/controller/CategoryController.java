@@ -37,4 +37,9 @@ public class CategoryController {
     public ResponseEntity<Category> findCategoryById(@PathVariable UUID id){
         return ResponseEntity.ok(this.categoryService.findCategoryById(id));
     }
+
+    @PatchMapping("/categories/{id}/inactivate")
+    public ResponseEntity<Category> inactivateCategory(@PathVariable UUID id){
+        return ResponseEntity.ok(this.categoryService.inactivateCategory(id));
+    }
 }
