@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,8 +26,9 @@ public class Account {
     @Column(name = "initial_balance", precision = 19, scale = 2, nullable = false)
     private BigDecimal initialBalance;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean active;
+    private StatusAccount status;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -41,7 +41,7 @@ public class Account {
     public Account(String name, BigDecimal initialBalance){
         this.name = name;
         this.initialBalance = initialBalance;
-        this.active = true;
+        this.status = StatusAccount.ACTIVE;
     }
 
 }

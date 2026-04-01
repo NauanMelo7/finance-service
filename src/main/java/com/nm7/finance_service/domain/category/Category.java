@@ -26,8 +26,9 @@ public class Category {
     @Column
     private String type;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean active;
+    private StatusCategory status;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -40,7 +41,7 @@ public class Category {
     public Category(String name, String type) {
         this.name = name;
         this.type = type;
-        this.active = true;
+        this.status = StatusCategory.ACTIVE;
     }
 
 }

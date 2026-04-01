@@ -1,6 +1,6 @@
 package com.nm7.finance_service.domain.account;
 
-public enum ActiveAccount {
+public enum StatusAccount {
     ACTIVE,
     INACTIVE
 }

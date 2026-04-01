@@ -1,13 +1,16 @@
 package com.nm7.finance_service.service;
 
 import com.nm7.finance_service.domain.category.Category;
+import com.nm7.finance_service.domain.category.StatusCategory;
 import com.nm7.finance_service.dto.categories.CategoriesCreateDTO;
+import com.nm7.finance_service.dto.categories.CategoriesResponseDTO;
 import com.nm7.finance_service.exception.BusinessException;
 import com.nm7.finance_service.repository.account.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,47 +20,85 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public Category createCategory(CategoriesCreateDTO body){
+    public CategoriesResponseDTO createCategory(CategoriesCreateDTO body){
 
         if(categoryRepository.existsByName(body.name())) {
-            throw new BusinessException("The category already has a name", HttpStatus.NOT_FOUND);
+            throw new BusinessException("The category already has a name", HttpStatus.CONFLICT);
         }
 
-        Category createCategory = new Category(
+        Category createCategory = this.categoryRepository.save(new Category(
                 body.name(),
                 body.type()
+        ));
+
+        return new CategoriesResponseDTO(
+                createCategory.getId(),
+                createCategory.getName(),
+                createCategory.getType(),
+                createCategory.getStatus(),
+                createCategory.getCreatedAt(),
+                createCategory.getUpdatedAt());
+
+    }
+
+    public List<CategoriesResponseDTO> findAllCategories(){
+
+       List<Category> findAllCategory = this.categoryRepository.findAll();
+       List<CategoriesResponseDTO> responseCategory = new ArrayList<>();
+
+       for(Category parseCategory : findAllCategory) {
+
+           CategoriesResponseDTO addCategory = new CategoriesResponseDTO(
+                   parseCategory.getId(),
+                   parseCategory.getName(),
+                   parseCategory.getType(),
+                   parseCategory.getStatus(),
+                   parseCategory.getCreatedAt(),
+                   parseCategory.getUpdatedAt()
+           );
+
+           responseCategory.add(addCategory);
+       }
+
+
+       return responseCategory;
+
+    }
+
+    public CategoriesResponseDTO findCategoryById(UUID id) {
+
+        Category findCategory = this.categoryRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Category is not found", HttpStatus.NOT_FOUND));
+        return new CategoriesResponseDTO(
+                findCategory.getId(),
+                findCategory.getName(),
+                findCategory.getType(),
+                findCategory.getStatus(),
+                findCategory.getCreatedAt(),
+                findCategory.getUpdatedAt()
         );
-
-        this.categoryRepository.save(createCategory);
-
-        return createCategory;
-
     }
 
-    public List<Category> findAllCategories(){
-
-       return categoryRepository.findAll();
-
-    }
-
-    public Category findCategoryById(UUID id) {
-
-        Category findCategory = this.categoryRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Category is not found", HttpStatus.NOT_FOUND));
-        return findCategory;
-    }
-
-    public Category inactivateCategory(UUID id) {
+    public CategoriesResponseDTO inactivateCategory(UUID id) {
 
         Category findCategory = this.categoryRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Category is not found", HttpStatus.NOT_FOUND));
 
-        if(!findCategory.isActive()) {
+        if(findCategory.getStatus().equals(StatusCategory.INACTIVE)) {
             throw new BusinessException("The Category is already inactive", HttpStatus.CONFLICT);
         }
 
-        findCategory.setActive(false);
+        findCategory.setStatus(StatusCategory.INACTIVE);
 
-        return this.categoryRepository.save(findCategory);
+        this.categoryRepository.save(findCategory);
+
+        return new CategoriesResponseDTO(
+                findCategory.getId(),
+                findCategory.getName(),
+                findCategory.getType(),
+                findCategory.getStatus(),
+                findCategory.getCreatedAt(),
+                findCategory.getUpdatedAt()
+        ) ;
     }
 }
