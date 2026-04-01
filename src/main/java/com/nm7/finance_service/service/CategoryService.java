@@ -5,8 +5,7 @@ import com.nm7.finance_service.domain.category.StatusCategory;
 import com.nm7.finance_service.dto.categories.CategoriesCreateDTO;
 import com.nm7.finance_service.dto.categories.CategoriesResponseDTO;
 import com.nm7.finance_service.exception.BusinessException;
-import com.nm7.finance_service.repository.account.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nm7.finance_service.repository.CategoryRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +16,11 @@ import java.util.UUID;
 @Service
 public class CategoryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+
+    public CategoryService(CategoryRepository categoryRepository){
+        this.categoryRepository = categoryRepository;
+    }
 
     public CategoriesResponseDTO createCategory(CategoriesCreateDTO body){
 

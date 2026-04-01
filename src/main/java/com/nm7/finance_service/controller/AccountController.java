@@ -5,6 +5,7 @@ import com.nm7.finance_service.dto.account.AccountResponseDTO;
 import com.nm7.finance_service.dto.account.FindAccountResponse;
 import com.nm7.finance_service.service.AccountService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class AccountController {
 
         AccountResponseDTO accountCreated = accountService.createAccount(data);
 
-        return ResponseEntity.ok(accountCreated);
+        return ResponseEntity.status(HttpStatus.CREATED).body(accountCreated);
     }
 
     @GetMapping("/account/{id}")

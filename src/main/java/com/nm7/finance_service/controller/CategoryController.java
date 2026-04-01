@@ -5,6 +5,7 @@ import com.nm7.finance_service.dto.categories.CategoriesResponseDTO;
 import com.nm7.finance_service.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class CategoryController {
     public ResponseEntity<CategoriesResponseDTO> createCategory(@Valid @RequestBody CategoriesCreateDTO body){
         CategoriesResponseDTO createCategory = categoryService.createCategory(body);
 
-        return ResponseEntity.ok(createCategory);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createCategory);
     }
 
     @GetMapping("/categories")

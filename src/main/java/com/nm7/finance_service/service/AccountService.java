@@ -6,7 +6,7 @@ import com.nm7.finance_service.dto.account.AccountCreateDTO;
 import com.nm7.finance_service.dto.account.AccountResponseDTO;
 import com.nm7.finance_service.dto.account.FindAccountResponse;
 import com.nm7.finance_service.exception.BusinessException;
-import com.nm7.finance_service.repository.account.AccountRepository;
+import com.nm7.finance_service.repository.AccountRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 

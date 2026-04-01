@@ -1,4 +1,4 @@
-package com.nm7.finance_service.repository.account;
+package com.nm7.finance_service.repository;
 
 import com.nm7.finance_service.domain.account.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
