@@ -1,5 +1,6 @@
 package com.nm7.finance_service.dto.Transaction;
 
+import com.nm7.finance_service.domain.transaction.TransactionStatus;
 import com.nm7.finance_service.domain.transaction.TransactionType;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +13,8 @@ import java.util.UUID;
 
 
 public record CreateTransactionDTO(
-        TransactionType transactionType,
+        TransactionType type,
+        TransactionStatus status,
         @Digits(integer = 19, fraction = 2)
         BigDecimal amount,
         LocalDateTime ocurrenceDate,

@@ -3,6 +3,7 @@ CREATE TABLE transaction(
     account_id UUID NOT NULL,
     category_id UUID NOT NULL,
     type VARCHAR(30) NOT NULL,
+    status VARCHAR(30) NOT NULL,
     amount DECIMAL(19,2) NOT NULL,
     occurrence_date TIMESTAMP NOT NULL DEFAULT now(),
     description VARCHAR(100),

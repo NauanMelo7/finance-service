@@ -35,7 +35,8 @@ public class TransactionService {
                 .orElseThrow(() -> new BusinessException("Category is not found by this ID", HttpStatus.NOT_FOUND));
 
         Transaction createTransaction = new Transaction(
-                body.transactionType(),
+                body.type(),
+                body.status(),
                 body.amount(),
                 body.ocurrenceDate(),
                 body.description(),
@@ -47,8 +48,8 @@ public class TransactionService {
 
         return new TransactionResponseDTO(
                 createTransaction.getId(),
-                createTransaction.getTransactionType(),
-                "status ok",
+                createTransaction.getType(),
+                createTransaction.getStatus(),
                 createTransaction.getAmount(),
                 createTransaction.getOccurrenceDate(),
                 createTransaction.getDescription(),

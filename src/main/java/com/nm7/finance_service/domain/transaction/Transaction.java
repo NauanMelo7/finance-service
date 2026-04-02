@@ -31,8 +31,13 @@ public class Transaction {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private TransactionType transactionType;
+    private TransactionType type;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private TransactionStatus status;
 
     @Column(name = "amount")
     private BigDecimal amount;
@@ -49,8 +54,9 @@ public class Transaction {
     private LocalDateTime createdAt;
 
 
-    public Transaction(TransactionType transactionType,BigDecimal amount,LocalDateTime ocurrenceDate, String description, Account account, Category category){
-        this.transactionType = transactionType;
+    public Transaction(TransactionType transactionType,TransactionStatus transactionStatus, BigDecimal amount,LocalDateTime ocurrenceDate, String description, Account account, Category category){
+        this.type = transactionType;
+        this.status = transactionStatus;
         this.amount = amount;
         this.occurrenceDate = ocurrenceDate;
         this.description = description;
