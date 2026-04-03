@@ -24,8 +24,9 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @Column
-    private String type;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TypeCategory type;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -39,7 +40,7 @@ public class Category {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public Category(String name, String type) {
+    public Category(String name, TypeCategory type) {
         this.name = name;
         this.type = type;
         this.status = StatusCategory.ACTIVE;
