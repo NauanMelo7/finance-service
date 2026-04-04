@@ -2,8 +2,6 @@ package com.nm7.finance_service.domain.transaction;
 import com.nm7.finance_service.domain.account.Account;
 import com.nm7.finance_service.domain.category.Category;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
